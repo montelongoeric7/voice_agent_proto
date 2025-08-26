@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voice Agent Demo</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>OpenAI Voice Agent Demo</h1>
+      <div id="controls">
+        <button id="connectBtn">Connect to Voice Agent</button>
+        <button id="disconnectBtn" disabled>Disconnect</button>
+      </div>
+      <div id="status">
+        <p id="statusText">Click "Connect" to start talking to the voice agent</p>
+      </div>
+      <div id="conversation">
+        <h3>Conversation Log:</h3>
+        <div id="messages"></div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
