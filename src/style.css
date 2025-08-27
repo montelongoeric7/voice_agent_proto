@@ -16,7 +16,7 @@ body {
 }
 
 #app {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -26,8 +26,51 @@ h1 {
   font-size: 2.5em;
   line-height: 1.1;
   margin-bottom: 1em;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
+/* Settings Panel */
+.settings {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.setting-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.setting-group label {
+  font-weight: 500;
+  color: #ffd700;
+  font-size: 0.9em;
+}
+
+select {
+  padding: 0.5em 1em;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background-color: #333;
+  color: white;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+
+select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
+/* Controls */
 #controls {
   margin: 2rem 0;
 }
@@ -35,62 +78,157 @@ h1 {
 button {
   border-radius: 8px;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  padding: 0.8em 1.5em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: all 0.25s;
   margin: 0 0.5em;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 button:hover:not(:disabled) {
-  border-color: #646cff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
 button:disabled {
   cursor: not-allowed;
   opacity: 0.5;
+  background: #555;
+  transform: none;
 }
 
+/* Status */
 #status {
   margin: 2rem 0;
-  padding: 1rem;
-  background-color: #1a1a1a;
-  border-radius: 8px;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border-radius: 12px;
+  border: 1px solid #333;
 }
 
+#statusText {
+  margin: 0;
+  font-size: 1.1em;
+  font-weight: 500;
+}
+
+/* Tips Section */
+.tips {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #2d4a22 0%, #1f3319 100%);
+  border-radius: 12px;
+  border: 1px solid #4a7c59;
+  text-align: left;
+}
+
+.tips h3 {
+  margin-top: 0;
+  color: #87ceeb;
+  text-align: center;
+}
+
+.tips ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.tips li {
+  margin-bottom: 0.5rem;
+  color: #b8e6b8;
+}
+
+/* Conversation Log */
 #conversation {
   margin-top: 2rem;
   text-align: left;
 }
 
+#conversation h3 {
+  text-align: center;
+  color: #ffd700;
+  margin-bottom: 1rem;
+}
+
 #messages {
-  background-color: #1a1a1a;
-  padding: 1rem;
-  border-radius: 8px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  padding: 1.5rem;
+  border-radius: 12px;
   min-height: 200px;
   max-height: 400px;
   overflow-y: auto;
-  font-family: monospace;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
   font-size: 0.9em;
+  border: 1px solid #333;
 }
 
 .message {
-  margin-bottom: 0.5rem;
-  padding: 0.25rem 0;
+  margin-bottom: 0.8rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border-left: 3px solid transparent;
 }
 
 .user-message {
   color: #4ade80;
+  background-color: rgba(74, 222, 128, 0.1);
+  border-left-color: #4ade80;
 }
 
 .assistant-message {
   color: #60a5fa;
+  background-color: rgba(96, 165, 250, 0.1);
+  border-left-color: #60a5fa;
 }
 
 .system-message {
   color: #fbbf24;
+  background-color: rgba(251, 191, 36, 0.1);
+  border-left-color: #fbbf24;
+  font-style: italic;
+}
+
+/* Scrollbar styling */
+#messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+#messages::-webkit-scrollbar-track {
+  background: #1a1a1a;
+  border-radius: 4px;
+}
+
+#messages::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+
+#messages::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  #app {
+    padding: 1rem;
+  }
+  
+  .settings {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  h1 {
+    font-size: 2em;
+  }
+  
+  button {
+    padding: 1em 1.2em;
+    margin: 0.5em;
+  }
 }
