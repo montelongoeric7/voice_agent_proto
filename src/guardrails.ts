@@ -99,5 +99,70 @@ export const smallTalkGuardrails: RealtimeOutputGuardrail[] = [
         outputInfo: { tooLongForSmallTalk: triggered, wordCount },
       };
     },
+  },
+  {
+    name: 'English Only',
+    async execute({ agentOutput }) {
+      // Common patterns that indicate non-English content
+      const nonEnglishPatterns = [
+        // Spanish
+        /\b(hola|gracias|por favor|de nada|buenos días|buenas tardes|¿cómo estás\?|muy bien|lo siento|hasta luego)\b/i,
+        // French  
+        /\b(bonjour|merci|s'il vous plaît|de rien|bonne journée|comment allez-vous\?|très bien|désolé|au revoir)\b/i,
+        // German
+        /\b(hallo|danke|bitte|guten tag|wie geht es ihnen\?|sehr gut|entschuldigung|auf wiedersehen)\b/i,
+        // Italian
+        /\b(ciao|grazie|prego|buongiorno|come stai\?|molto bene|scusa|arrivederci)\b/i,
+        // Portuguese
+        /\b(olá|obrigado|obrigada|por favor|bom dia|como está\?|muito bem|desculpa|tchau)\b/i,
+        // Russian (Latin script)
+        /\b(privyet|spasibo|pozhaluysta|kak dela\?|khorosho|izvinite|do svidaniya)\b/i,
+        // Japanese (romanized)
+        /\b(konnichiwa|arigatou|sumimasen|ohayo|sayonara|hai|iie)\b/i,
+        // Chinese (pinyin)
+        /\b(ni hao|xie xie|bu ke qi|zai jian|dui bu qi)\b/i,
+        // Korean (romanized)
+        /\b(annyeong|kamsahamnida|mianhae|annyeonghi gaseyo)\b/i,
+        // Arabic (romanized)
+        /\b(ahlan|shukran|afwan|ma'a salama|asif)\b/i,
+        // Hindi (romanized)
+        /\b(namaste|dhanyawad|maaf kijiye|alvida)\b/i,
+        // Dutch
+        /\b(hallo|dank je|alsjeblieft|goedemorgen|hoe gaat het\?|heel goed|sorry|tot ziens)\b/i,
+        // Swedish
+        /\b(hej|tack|snälla|god morgon|hur mår du\?|mycket bra|ursäkta|hej då)\b/i,
+        // Norwegian
+        /\b(hei|takk|takk skal du ha|god morgen|hvordan har du det\?|bare bra|unnskyld|ha det)\b/i,
+        // General non-English indicators
+        /[àáâãäåæçèéêëìíîïñòóôõöøùúûüýÿ]/i, // Accented characters common in non-English
+        /[αβγδεζηθικλμνξοπρστυφχψω]/i, // Greek letters
+        /[а-яё]/i, // Cyrillic characters
+        /[一-龯]/i, // Chinese characters
+        /[ひらがなカタカナ]/i, // Japanese characters
+        /[가-힣]/i, // Korean characters
+        /[ا-ي]/i, // Arabic characters
+      ];
+
+      // Check if any non-English patterns are found
+      const triggered = nonEnglishPatterns.some(pattern => pattern.test(agentOutput));
+      
+      // Additional check: if the response is mostly non-ASCII characters (excluding punctuation)
+      const nonAsciiCount = (agentOutput.match(/[^\x00-\x7F]/g) || []).length;
+      const totalChars = agentOutput.replace(/\s/g, '').length; // Remove spaces for counting
+      const nonAsciiRatio = totalChars > 0 ? nonAsciiCount / totalChars : 0;
+      const highNonAsciiRatio = nonAsciiRatio > 0.3; // If more than 30% non-ASCII, likely foreign language
+
+      const finalTriggered = triggered || highNonAsciiRatio;
+
+      return {
+        tripwireTriggered: finalTriggered,
+        outputInfo: { 
+          containsForeignLanguage: triggered,
+          highNonAsciiRatio: highNonAsciiRatio,
+          nonAsciiRatio: nonAsciiRatio,
+          detectedPatterns: nonEnglishPatterns.filter(pattern => pattern.test(agentOutput)).length
+        },
+      };
+    },
   }
 ];
